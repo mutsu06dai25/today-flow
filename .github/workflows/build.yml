@@ -23,11 +23,16 @@ jobs:
         with:
           gradle-version: "8.9"
 
+      # アップロードした today-flow.zip を展開して、その中でビルドする
+      - name: Unzip project
+        run: unzip -q today-flow.zip -d work
+
       - name: Build APK
+        working-directory: work/today-flow
         run: gradle :app:assembleRelease --no-daemon
 
       - name: Rename APK
-        run: cp app/build/outputs/apk/release/app-release.apk today-flow.apk
+        run: cp work/today-flow/app/build/outputs/apk/release/app-release.apk today-flow.apk
 
       - name: Publish release
         uses: softprops/action-gh-release@v2
